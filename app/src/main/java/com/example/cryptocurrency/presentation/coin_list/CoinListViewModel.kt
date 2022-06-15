@@ -20,7 +20,6 @@ class CoinListViewModel @Inject constructor(
 
     private val _state = MutableLiveData<CoinListState>(CoinListState())
     val state: MutableLiveData<CoinListState> = _state
-//    val state: State<CoinListState> = _state
 
      fun getCoins() {
         getCoinsUseCase().onEach {result ->

@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cryptocurrency">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".CoinApplication"
         android:allowBackup="true"
@@ -12,13 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CryptoCurrency">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.splash.SplashActivity"
+            android:theme="@style/SplashTheme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.MainActivity"
+            android:exported="true">
+
         </activity>
     </application>
 

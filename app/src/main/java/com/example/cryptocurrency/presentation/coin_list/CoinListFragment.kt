@@ -52,11 +52,6 @@ class CoinListFragment : Fragment() , CoinListAction{
     }
 
     private  fun observeViewModel() {
-//        viewModel.coins.observe(viewLifecycleOwner, Observer {noteList->
-//            binding.progressBar.visibility = View.GONE
-//            binding.coinListView.visibility=View.VISIBLE
-//            coinListAdapter.updateCoins(noteList.sortedByDescending {it.name})
-//        })
         viewModel.state.observe(viewLifecycleOwner, Observer {
             it?.let { render(it) }
         })
