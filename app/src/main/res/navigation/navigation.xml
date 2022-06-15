@@ -11,17 +11,17 @@
         android:label="fragment_coin_list"
         tools:layout="@layout/fragment_coin_list" >
         <action
-            android:id="@+id/action_coinListFragment_to_coinDetailFragment"
-            app:destination="@id/coinDetailFragment" />
+            android:id="@+id/actionGoToCoinDetail"
+            app:destination="@id/coinDetailFragment2" />
     </fragment>
     <fragment
-        android:id="@+id/coinDetailFragment"
+        android:id="@+id/coinDetailFragment2"
         android:name="com.example.cryptocurrency.presentation.coin_detail.CoinDetailFragment"
         android:label="fragment_coin_detail"
         tools:layout="@layout/fragment_coin_detail" >
         <argument
             android:name="coinId"
             app:argType="string"
-            android:defaultValue="coinId"/>
+            android:defaultValue="coinId" />
     </fragment>
 </navigation>

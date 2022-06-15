@@ -15,6 +15,7 @@ import com.example.cryptocurrency.databinding.FragmentCoinListBinding
 import com.example.cryptocurrency.domain.model.Coin
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import androidx.navigation.Navigation
 
 
 @AndroidEntryPoint
@@ -58,7 +59,7 @@ class CoinListFragment : Fragment() , CoinListAction{
 
     }
     private fun render(event: CoinListState) {
-        Log.e("CoinListFragment",event.toString())
+//        Log.e("CoinListFragment",event.toString())
         if (!event.isLoading && event.coins.isNotEmpty()) {
             binding.progressBar.visibility = View.GONE
             binding.coinListView.visibility=View.VISIBLE
@@ -80,10 +81,13 @@ class CoinListFragment : Fragment() , CoinListAction{
 
     }
 
+    private fun goToCoinDetailScreen(coinId:String){
+        val action = CoinListFragmentDirections.actionGoToCoinDetail(coinId)
+        Navigation.findNavController(binding.coinListView).navigate(action)
+    }
+
     override fun onClick(id: String) {
-//        val action = .actionGotoNotes(id)
-
-
+        goToCoinDetailScreen(id)
     }
 
 }

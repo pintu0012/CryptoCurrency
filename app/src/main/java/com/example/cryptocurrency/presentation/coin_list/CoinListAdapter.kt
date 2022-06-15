@@ -19,7 +19,7 @@ class CoinListAdapter(var coins: ArrayList<Coin>,val action:CoinListAction):Recy
     inner class ViewHolder(private val itemBinding: CoinListItemBinding):RecyclerView.ViewHolder(itemBinding.root){
         fun bind(coin:Coin){
             itemBinding.title.text = coin.name
-            itemBinding.symbol.text = coin.symbol
+            itemBinding.symbol.text = "(${coin.symbol})"
             if(coin.is_active){
                 itemBinding.status.text ="Active"
 
