@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class GetCoinsUseCase @Inject constructor(
@@ -22,6 +23,8 @@ class GetCoinsUseCase @Inject constructor(
             emit(Resource.Error(e.localizedMessage?:"An Unexpected Error Occurred"))
         }catch (e: IOException){
             emit(Resource.Error(e.localizedMessage?:"Couldn't reach server. Check your internet connection "))
+        }catch (e:SocketTimeoutException){
+            emit(Resource.Error(e.localizedMessage?:"Time out, please try again later"))
         }
     }
 }

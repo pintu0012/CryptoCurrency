@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,6 +17,7 @@ import com.example.cryptocurrency.databinding.FragmentCoinDetailBinding
 import com.example.cryptocurrency.databinding.FragmentCoinListBinding
 import com.example.cryptocurrency.domain.model.Coin
 import com.example.cryptocurrency.domain.model.CoinDetail
+import com.example.cryptocurrency.presentation.base.BaseFragment
 import com.example.cryptocurrency.presentation.coin_list.CoinListAdapter
 import com.example.cryptocurrency.presentation.coin_list.CoinListState
 import com.example.cryptocurrency.presentation.coin_list.CoinListViewModel
@@ -24,29 +26,18 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CoinDetailFragment : Fragment() {
-    private lateinit var viewModel: CoinDetailViewModel
-    private var currentCoin = CoinDetail("","","","",0,false, emptyList(), emptyList())
-    private lateinit var binding: FragmentCoinDetailBinding
+class CoinDetailFragment : BaseFragment<FragmentCoinDetailBinding, CoinDetailViewModel>() {
+    override val viewModel: CoinDetailViewModel by viewModels()
     private var coinId = ""
     private val tagAdapter= TagAdapter(arrayListOf())
     private val teamMemberAdapter = TeamMemberAdapter(arrayListOf())
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentCoinDetailBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
-    }
-
-
+    override fun getViewBinding(): FragmentCoinDetailBinding =
+        FragmentCoinDetailBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        viewModel = ViewModelProviders.of(this).get(CoinDetailViewModel::class.java)
         arguments?.let {
             coinId = CoinDetailFragmentArgs.fromBundle(it).coinId
         }
@@ -86,18 +77,27 @@ class CoinDetailFragment : Fragment() {
     private fun render(event: CoinDetailState) {
 //        Log.e("CoinDetailFragment",event.toString())
         if (!event.isLoading && event.coin!=null) {
+            handleLoading(false)
             handleData(event.coin)
             return
         }
         if (event.isLoading) {
-            binding.progressLayout.progressLayout.visibility             = View.VISIBLE
+            handleLoading(true)
+            binding.mainLayout.visibility  = View.GONE
+//            binding.errorLayout.errorLayout.visibility = View.GONE
+
 //            binding.coinListView.visibility=View.GONE
             return
 
         }
         if (event.error.isNotEmpty()) {
-            binding.progressLayout.progressLayout.visibility = View.GONE
-            Toast.makeText(context,event.error, Toast.LENGTH_SHORT)
+            handleLoading(false)
+            binding.mainLayout.visibility  = View.GONE
+
+            handleErrorMessage(event.error)
+//            binding.progressLayout.progressLayout.visibility = View.GONE
+//            binding.errorLayout.errorLayout.visibility = View.VISIBLE
+//            Toast.makeText(context,event.error, Toast.LENGTH_SHORT)
             return
 
         }
@@ -105,7 +105,10 @@ class CoinDetailFragment : Fragment() {
     }
 
     private fun handleData(coin: CoinDetail) {
-        binding.progressLayout.progressLayout.visibility = View.GONE
+//        binding.progressLayout.progressLayout.visibility = View.GONE
+//        binding.errorLayout.errorLayout.visibility = View.GONE
+        binding.mainLayout.visibility  = View.VISIBLE
+
         binding.name.text = coin.name
         binding.symbol.text = "(${coin.symbol})"
 
@@ -119,5 +122,7 @@ class CoinDetailFragment : Fragment() {
         teamMemberAdapter.updateTeamMember(coin.team)
         binding.tagsRecyclerView.visibility=View.VISIBLE
     }
+
+
 
 }
